@@ -2,10 +2,15 @@ package com.adams.cursomc;
 
 import com.adams.cursomc.domain.Categoria;
 import com.adams.cursomc.domain.Cidade;
+import com.adams.cursomc.domain.Cliente;
+import com.adams.cursomc.domain.Endereco;
 import com.adams.cursomc.domain.Estado;
 import com.adams.cursomc.domain.Produto;
+import com.adams.cursomc.domain.enuns.TipoCliente;
 import com.adams.cursomc.repositories.CategoriaRepository;
 import com.adams.cursomc.repositories.CidadeRepository;
+import com.adams.cursomc.repositories.ClienteRepository;
+import com.adams.cursomc.repositories.EnderecoRepository;
 import com.adams.cursomc.repositories.EstadoRepository;
 import com.adams.cursomc.repositories.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +28,8 @@ public class CursomcApplication implements CommandLineRunner {
   private final ProdutoRepository produtoRepository;
   private final CidadeRepository cidadeRepository;
   private final EstadoRepository estadoRepository;
+  private final ClienteRepository clienteRepository;
+  private final EnderecoRepository enderecoRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(CursomcApplication.class, args);
@@ -64,5 +71,45 @@ public class CursomcApplication implements CommandLineRunner {
 
     estadoRepository.save(Arrays.asList(est1, est2));
     cidadeRepository.save(Arrays.asList(cid1, cid2, cid3));
+
+    // Cliente
+    final Cliente clie1 =
+        Cliente.builder()
+            .nome("Maria Silva")
+            .email("maria@gmail.com")
+            .cpfOuCnpj("123123123123")
+            .tipo(TipoCliente.PESSOA_FISICA)
+            .build();
+
+    // Telefones
+    clie1.getTelefones().addAll(Arrays.asList("123123123123", "312321321321"));
+
+    // Endereco
+    final Endereco e1 =
+        Endereco.builder()
+            .logradouro("Rua Flores")
+            .numero("300")
+            .complemento("Apto 303")
+            .bairro("Jardim")
+            .cep("123123123")
+            .cliente(clie1)
+            .cidade(cid1)
+            .build();
+
+    final Endereco e2 =
+        Endereco.builder()
+            .logradouro("Avenida Matos")
+            .numero("105")
+            .complemento("Sala 800")
+            .bairro("Centro")
+            .cep("31231231233")
+            .cliente(clie1)
+            .cidade(cid2)
+            .build();
+
+    clie1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+    clienteRepository.save(Arrays.asList(clie1));
+    enderecoRepository.save(Arrays.asList(e1, e2));
   }
 }

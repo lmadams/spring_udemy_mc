@@ -1,5 +1,6 @@
 package com.adams.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +29,6 @@ public class Estado {
 
   @Builder.Default
   @OneToMany(mappedBy = "estado")
+  @JsonBackReference
   private List<Cidade> cidades = new ArrayList<>();
 }

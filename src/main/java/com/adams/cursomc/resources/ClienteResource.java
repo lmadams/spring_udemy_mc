@@ -1,7 +1,7 @@
 package com.adams.cursomc.resources;
 
-import com.adams.cursomc.domain.Categoria;
-import com.adams.cursomc.services.CategoriaService;
+import com.adams.cursomc.domain.Cliente;
+import com.adams.cursomc.services.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/categorias")
+@RequestMapping(value = "/clientes")
 @RequiredArgsConstructor
-public class CategoriaResource {
+public class ClienteResource {
 
-  private final CategoriaService service;
+  private final ClienteService service;
 
   @GetMapping(value = "/{id}")
   public ResponseEntity find(@PathVariable Integer id) {
-    final Categoria categoria = service.buscar(id);
-    return ResponseEntity.ok(categoria);
+    final Cliente cliente = service.buscar(id);
+    return ResponseEntity.ok(cliente);
   }
 }

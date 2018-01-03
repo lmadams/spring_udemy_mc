@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class CategoriaServices {
+public class CategoriaService {
 
   private final CategoriaRepository repository;
 

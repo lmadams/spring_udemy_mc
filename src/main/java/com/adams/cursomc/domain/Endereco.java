@@ -1,6 +1,6 @@
 package com.adams.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,21 +13,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
 @Entity
-public class Cidade {
+public class Endereco {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private String nome;
+  private String logradouro;
+
+  private String numero;
+
+  private String complemento;
+
+  private String bairro;
+
+  private String cep;
 
   @ManyToOne
-  @JoinColumn(name = "ESTADO_ID")
-  @JsonManagedReference
-  private Estado estado;
+  @JoinColumn(name = "CLIENTE_ID")
+  @JsonBackReference
+  private Cliente cliente;
+
+  @ManyToOne
+  @JoinColumn(name = "CIDADE_ID")
+  private Cidade cidade;
 }
