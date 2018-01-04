@@ -1,6 +1,7 @@
 package com.adams.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +41,7 @@ public class Endereco implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "CLIENTE_ID")
-  @JsonBackReference
+  @JsonIgnore
   private Cliente cliente;
 
   @ManyToOne

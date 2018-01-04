@@ -1,8 +1,7 @@
 package com.adams.cursomc.domain;
 
 import com.adams.cursomc.domain.enuns.TipoCliente;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,7 +45,6 @@ public class Cliente implements Serializable {
 
   @Builder.Default
   @OneToMany(mappedBy = "cliente")
-  @JsonManagedReference
   private List<Endereco> enderecos = new ArrayList<>();
 
   @Builder.Default
@@ -56,7 +54,7 @@ public class Cliente implements Serializable {
 
   @Builder.Default
   @OneToMany(mappedBy = "cliente")
-  @JsonBackReference
+  @JsonIgnore
   private List<Pedido> pedidos = new ArrayList<>();
 
   @Override

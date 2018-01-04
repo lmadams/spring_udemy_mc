@@ -1,6 +1,8 @@
 package com.adams.cursomc.domain;
 
 import com.adams.cursomc.domain.enuns.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,5 +34,6 @@ public class Pagamento implements Serializable {
   @OneToOne
   @JoinColumn(name = "PEDIDO_ID")
   @MapsId
+  @JsonIgnore
   private Pedido pedido;
 }

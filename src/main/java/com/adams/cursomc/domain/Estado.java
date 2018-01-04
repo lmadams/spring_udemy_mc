@@ -1,6 +1,7 @@
 package com.adams.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +32,7 @@ public class Estado implements Serializable {
 
   @Builder.Default
   @OneToMany(mappedBy = "estado")
-  @JsonBackReference
+  @JsonIgnore
   private List<Cidade> cidades = new ArrayList<>();
 
   @Override

@@ -5,6 +5,7 @@ import com.adams.cursomc.domain.Cidade;
 import com.adams.cursomc.domain.Cliente;
 import com.adams.cursomc.domain.Endereco;
 import com.adams.cursomc.domain.Estado;
+import com.adams.cursomc.domain.ItemPedido;
 import com.adams.cursomc.domain.Pagamento;
 import com.adams.cursomc.domain.PagamentoComBoleto;
 import com.adams.cursomc.domain.PagamentoComCartao;
@@ -17,6 +18,7 @@ import com.adams.cursomc.repositories.CidadeRepository;
 import com.adams.cursomc.repositories.ClienteRepository;
 import com.adams.cursomc.repositories.EnderecoRepository;
 import com.adams.cursomc.repositories.EstadoRepository;
+import com.adams.cursomc.repositories.ItemPedidoRepository;
 import com.adams.cursomc.repositories.PagamentoRepository;
 import com.adams.cursomc.repositories.PedidoRepository;
 import com.adams.cursomc.repositories.ProdutoRepository;
@@ -28,6 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -41,6 +44,7 @@ public class CursomcApplication implements CommandLineRunner {
   private final EnderecoRepository enderecoRepository;
   private final PedidoRepository pedidoRepository;
   private final PagamentoRepository pagamentoRepository;
+  private final ItemPedidoRepository itemPedidoRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(CursomcApplication.class, args);
@@ -152,5 +156,19 @@ public class CursomcApplication implements CommandLineRunner {
 
     pedidoRepository.save(Arrays.asList(pedido1, pedido2));
     pagamentoRepository.save(Arrays.asList(pag1, pag2));
+
+    // Itens de pedido
+    final ItemPedido ip1 = new ItemPedido(pedido1, prod1, 0.0, 1, 2000.0);
+    final ItemPedido ip2 = new ItemPedido(pedido1, prod3, 0.0, 2, 80.0);
+    final ItemPedido ip3 = new ItemPedido(pedido2, prod2, 100.0, 1, 800.0);
+
+    pedido1.setItens(new HashSet<>(Arrays.asList(ip1, ip2)));
+    pedido2.setItens(new HashSet<>(Collections.singletonList(ip3)));
+
+    prod1.setItens(new HashSet<>(Collections.singletonList(ip1)));
+    prod2.setItens(new HashSet<>(Collections.singletonList(ip3)));
+    prod3.setItens(new HashSet<>(Collections.singletonList(ip2)));
+
+    itemPedidoRepository.save(Arrays.asList(ip1, ip2, ip3));
   }
 }

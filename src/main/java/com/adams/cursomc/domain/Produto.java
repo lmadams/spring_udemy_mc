@@ -1,12 +1,10 @@
 package com.adams.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,9 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -37,11 +38,30 @@ public class Produto implements Serializable {
 
   @Builder.Default
   @ManyToMany
-  @JsonBackReference
+  @JsonIgnore
   @JoinTable(
     name = "PRODUTO_CATEGORIA",
     joinColumns = @JoinColumn(name = "produto_id"),
     inverseJoinColumns = @JoinColumn(name = "categoria_id")
   )
   private List<Categoria> categorias = new ArrayList<>();
+
+  @Builder.Default
+  @OneToMany(mappedBy = "id.produto")
+  @JsonIgnore
+  private Set<ItemPedido> itens = new HashSet<>();
+
+  @JsonIgnore
+  public List<Pedido> getPedidos() {
+    List<Pedido> lista = new ArrayList<>();
+    for (ItemPedido itemPedido : this.itens) {
+      lista.add(itemPedido.getPedido());
+    }
+    return lista;
+  }
+
+  @Override
+  public String toString() {
+    return "Produto{" + "id=" + id + ", nome='" + nome + '\'' + ", preco=" + preco + '}';
+  }
 }
