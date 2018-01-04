@@ -5,19 +5,27 @@ import com.adams.cursomc.domain.Cidade;
 import com.adams.cursomc.domain.Cliente;
 import com.adams.cursomc.domain.Endereco;
 import com.adams.cursomc.domain.Estado;
+import com.adams.cursomc.domain.Pagamento;
+import com.adams.cursomc.domain.PagamentoComBoleto;
+import com.adams.cursomc.domain.PagamentoComCartao;
+import com.adams.cursomc.domain.Pedido;
 import com.adams.cursomc.domain.Produto;
+import com.adams.cursomc.domain.enuns.EstadoPagamento;
 import com.adams.cursomc.domain.enuns.TipoCliente;
 import com.adams.cursomc.repositories.CategoriaRepository;
 import com.adams.cursomc.repositories.CidadeRepository;
 import com.adams.cursomc.repositories.ClienteRepository;
 import com.adams.cursomc.repositories.EnderecoRepository;
 import com.adams.cursomc.repositories.EstadoRepository;
+import com.adams.cursomc.repositories.PagamentoRepository;
+import com.adams.cursomc.repositories.PedidoRepository;
 import com.adams.cursomc.repositories.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -30,6 +38,8 @@ public class CursomcApplication implements CommandLineRunner {
   private final EstadoRepository estadoRepository;
   private final ClienteRepository clienteRepository;
   private final EnderecoRepository enderecoRepository;
+  private final PedidoRepository pedidoRepository;
+  private final PagamentoRepository pagamentoRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(CursomcApplication.class, args);
@@ -111,5 +121,35 @@ public class CursomcApplication implements CommandLineRunner {
 
     clienteRepository.save(Arrays.asList(clie1));
     enderecoRepository.save(Arrays.asList(e1, e2));
+
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+    // Pedido
+    final Pedido pedido1 =
+        Pedido.builder()
+            .instante(sdf.parse("30/09/2017 10:32"))
+            .cliente(clie1)
+            .enderecoDeEntrega(e1)
+            .build();
+
+    final Pedido pedido2 =
+        Pedido.builder()
+            .instante(sdf.parse("10/10/2017 10:32"))
+            .cliente(clie1)
+            .enderecoDeEntrega(e2)
+            .build();
+
+    final Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
+    pedido1.setPagamento(pag1);
+
+    final Pagamento pag2 =
+        new PagamentoComBoleto(
+            null, EstadoPagamento.PENDENTE, pedido2, sdf.parse("20/10/2017 00:00"), null);
+    pedido2.setPagamento(pag2);
+
+    clie1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+
+    pedidoRepository.save(Arrays.asList(pedido1, pedido2));
+    pagamentoRepository.save(Arrays.asList(pag1, pag2));
   }
 }

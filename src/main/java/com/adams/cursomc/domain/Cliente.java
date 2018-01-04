@@ -50,4 +50,8 @@ public class Cliente {
   @ElementCollection
   @CollectionTable(name = "TELEFONES")
   private Set<String> telefones = new HashSet<>();
+
+  @Builder.Default
+  @OneToMany(mappedBy = "cliente")
+  private List<Pedido> pedidos = new ArrayList<>();
 }
