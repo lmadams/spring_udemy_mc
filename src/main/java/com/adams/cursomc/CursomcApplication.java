@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -58,11 +59,11 @@ public class CursomcApplication implements CommandLineRunner {
     final Produto prod3 = Produto.builder().nome("Mouse").preco(80.0).build();
 
     cat1.getProdutos().addAll(Arrays.asList(prod1, prod2, prod3));
-    cat2.getProdutos().addAll(Arrays.asList(prod2));
+    cat2.getProdutos().addAll(Collections.singletonList(prod2));
 
-    prod1.getCategorias().addAll(Arrays.asList(cat1));
+    prod1.getCategorias().addAll(Collections.singletonList(cat1));
     prod2.getCategorias().addAll(Arrays.asList(cat1, cat2));
-    prod3.getCategorias().addAll(Arrays.asList(cat1));
+    prod3.getCategorias().addAll(Collections.singletonList(cat1));
 
     categoriaRepository.save(Arrays.asList(cat1, cat2));
     produtoRepository.save(Arrays.asList(prod1, prod2, prod3));
@@ -76,7 +77,7 @@ public class CursomcApplication implements CommandLineRunner {
     final Cidade cid2 = Cidade.builder().nome("São Paulo").estado(est2).build();
     final Cidade cid3 = Cidade.builder().nome("Campinas").estado(est2).build();
 
-    est1.getCidades().addAll(Arrays.asList(cid1));
+    est1.getCidades().addAll(Collections.singletonList(cid1));
     est2.getCidades().addAll(Arrays.asList(cid2, cid3));
 
     estadoRepository.save(Arrays.asList(est1, est2));
@@ -119,7 +120,7 @@ public class CursomcApplication implements CommandLineRunner {
 
     clie1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-    clienteRepository.save(Arrays.asList(clie1));
+    clienteRepository.save(Collections.singletonList(clie1));
     enderecoRepository.save(Arrays.asList(e1, e2));
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");

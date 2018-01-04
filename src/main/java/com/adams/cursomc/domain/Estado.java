@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,8 @@ import java.util.List;
 @Data
 @Builder
 @Entity
-public class Estado {
+public class Estado implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +33,12 @@ public class Estado {
   @OneToMany(mappedBy = "estado")
   @JsonBackReference
   private List<Cidade> cidades = new ArrayList<>();
+
+  @Override
+  public String toString() {
+    return "Estado{" +
+        "id=" + id +
+        ", nome='" + nome + '\'' +
+        '}';
+  }
 }

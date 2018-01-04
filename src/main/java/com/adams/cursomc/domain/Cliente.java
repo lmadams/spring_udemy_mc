@@ -1,6 +1,7 @@
 package com.adams.cursomc.domain;
 
 import com.adams.cursomc.domain.enuns.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +28,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Cliente {
+public class Cliente implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,5 +56,25 @@ public class Cliente {
 
   @Builder.Default
   @OneToMany(mappedBy = "cliente")
+  @JsonBackReference
   private List<Pedido> pedidos = new ArrayList<>();
+
+  @Override
+  public String toString() {
+    return "Cliente{"
+        + "id="
+        + id
+        + ", nome='"
+        + nome
+        + '\''
+        + ", email='"
+        + email
+        + '\''
+        + ", cpfOuCnpj='"
+        + cpfOuCnpj
+        + '\''
+        + ", tipo="
+        + tipo
+        + '}';
+  }
 }

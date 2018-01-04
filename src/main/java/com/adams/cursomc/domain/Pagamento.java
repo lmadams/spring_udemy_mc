@@ -14,13 +14,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Pagamento {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Pagamento implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id private Integer id;
 
